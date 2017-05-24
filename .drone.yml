@@ -1,18 +1,20 @@
----
-apiVersion: extensions/v1beta1
-kind: Deployment
-metadata:
-  name: dsp-hello-world-abeadle
-spec:
-  replicas: 1
-  template:
-    metadata:
-      labels:
-        name: dsp-hello-world-abeadle
-    spec:
-      containers:
-      - name: hello-world-nodejs
-        image: dsp-hello-world:v1
-        imagePullPolicy: ifNotPresent
-        ports:
-          - containerPort: 4000
+pipeline:
+
+  my-build:
+    privileged: true
+    image: docker:1.11
+    environment:
+      - DOCKER_HOST=tcp://127.0.0.1:2375
+    commands:
+      - docker build -t dsp-hellow-world-abeadle .
+    when:
+      branch: master
+      event: push
+
+services:
+  dind:
+    image: docker:1.11-dind
+    privileged: true
+    command:
+      - "-s"
+      - "overlay"
