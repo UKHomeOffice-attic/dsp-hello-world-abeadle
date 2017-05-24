@@ -1,0 +1,18 @@
+---
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: dsp-hello-world-abeadle
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        name: dsp-hello-world-abeadle
+    spec:
+      containers:
+      - name: hello-world-nodejs
+        image: dsp-hello-world:v1
+        imagePullPolicy: ifNotPresent
+        ports:
+          - containerPort: 4000
